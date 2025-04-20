@@ -22,12 +22,29 @@ alwaysApply: {true or false}
 
 ## Examples
 
-<example>
-{valid rule application}
+<example title="Creating New Rule: new_rule-agent.mdc">
+  - Step 1: Use `edit_file` to create `.cursor/rules/core-rules/new_rule-agent.txt` with content:
+    ```mdc
+    ---
+    description: `Description for new_rule`
+    globs:
+    alwaysApply: false
+    ---
+
+    # New Rule Title
+
+    ## Critical Rules
+    - Rule detail 1
+    ```
+  - Step 2: Use `run_terminal_cmd` to rename `.cursor/rules/core-rules/new_rule-agent.txt` to `.cursor/rules/core-rules/new_rule-agent.mdc` (requires confirmation).
 </example>
 
-<example type="invalid">
-{invalid rule application}
+<example type="invalid" title="Direct Creation/Editing of New Rule as .mdc">
+  - Directly creating `.cursor/rules/core-rules/new_rule-agent.mdc` and editing it. This violates the creation workflow which requires starting with a `.txt` extension.
+</example>
+
+<example type="invalid" title="Using Temporary Folder for New Rule">
+ - Creating the initial `.txt` file in `.cursor/rules/tmp/` instead of the final destination directory. This is incorrect; the `.txt` file must be created in its final path.
 </example>
 ```
 
@@ -57,6 +74,11 @@ Common glob patterns for different rule types:
 - Multiple patterns: dist/**/*.*, docs/**/*.md, *test*.*
 
 ## Critical Rules
+  - **Workflow for Creating New Rules (NEW RULES ONLY):**
+    - **Step 1 (Create & Edit):** Use the file editing tool (`edit_file`) to create the new rule file in its **final destination directory** with the `.txt` extension and its **initial content**. (Ex: Creating `.cursor/rules/core-rules/my-new-rule-agent.txt` with content).
+    - **Step 2 (Rename):** Use a terminal command (`run_terminal_cmd` with `mv` or `rename`) to rename the `.txt` file to `.mdc` within its final directory. (Ex: Renaming `.cursor/rules/core-rules/my-new-rule-agent.txt` to `.cursor/rules/core-rules/my-new-rule-agent.mdc`).
+    - **Important:** This 2-step flow is *exclusively* for creating new rules. Editing existing rules is done directly on the `.mdc` file.
+    - **Execution:** Execute Step 1 and Step 2 sequentially. Step 2 requires user confirmation for the terminal command.
   - Rule files will be located and named ALWAYS as: `.cursor/rules/{organizational-folder}/rule-name-{auto|agent|manual|always}.mdc`
   - Rules will NEVER be created anywhere other than .cursor/rules/**
   - You will always check to see if there is an existing rule to update under all .cursor/rules sub-folders
